@@ -12,9 +12,11 @@ public interface EventDao {
     boolean eventsExists(String username);
     int countEvents();
     boolean eventsExists();
-    boolean hasEvent(String eventname, String username, String creator, String patientlastname, String patientdob, String patientfirstname, String patinetins, String patinetphone, String email);
+    boolean hasEvent(String eventname, String username, String eventAurthor, String patientlastname, String patientdob,
+    		String patientfirstname, String patinetins, String patinetphone, String email, String SSN);
     List<Event> selectRecentEvent(String username);
     List<Event> selectAllEvent(String username);
     List<Event> selectAllEvents();
     Event getEventById(int patientid);
+	
 }

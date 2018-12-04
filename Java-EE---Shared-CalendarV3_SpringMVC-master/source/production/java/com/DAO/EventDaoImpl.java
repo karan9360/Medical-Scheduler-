@@ -35,16 +35,16 @@ public class EventDaoImpl implements EventDao{
      ***************************************************************/
     @Override
     public void insertEvent(Event event) {
-        String query = "INSERT INTO Event (ID, EventName, EventDate, EventDesc, EventUser, EventCreator, Patientlastname, Patientdob, Patientfirstname, Patientins, Patientphone, email) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
+        String query = "insert into `Event` (ID, EventName, EventDate, EventDesc, EventUser, EventCreator, Patientlastname, Patientdob, Patientfirstname, Patientins, Patientphone, email, SSN) values (?,?,?,?,?,?,?,?,?,?,?,?,?);";
         jdbcTemplate = new JdbcTemplate(dataSource);
-        Object[] inputs = new Object[] {event.getId(), event.getEventName(), event.getEventDate(), event.getEventDescription(), event.getUsername(), event.getEventAuthor(), event.getemail()};
+        Object[] inputs = new Object[] {event.getId(), event.getEventName(), event.getEventDate(), event.getEventDescription(), event.getUsername(), event.getEventAuthor(),event.getpatientlastname(), event.getpatientdob(), event.getpatientfirstname(), event.getpatientins(), event.getpatientphone(),  event.getemail(), event.getSSN()};
         jdbcTemplate.update(query,inputs); // 'update' allows for non-static queries whereas execute wouldn't (e.g. '?')
         if(debug) System.out.printf("Added event with name: %s and with user: %s and author: %s", event.getEventName(), event.getUsername(), event.getEventAuthor());
     }
 
     @Override
     public void createEventTable() {
-        String query = "CREATE TABLE Event(ID int, EventName VARCHAR(255), EventDate Date, EventDesc VARCHAR(255), EventUser VARCHAR(255), EventCreator VARCHAR(255), Patientlastname VARCHAR(255), Patientdob Date, Patientfistname VARCHAR(255), Patientins VARCHAR(255), Patientphone VARCHAR(255), email VARCHAR(255) ";
+        String query = "CREATE TABLE Event(ID int, EventName VARCHAR(255), EventDate Date, EventDesc VARCHAR(255), EventUser VARCHAR(255), EventCreator VARCHAR(255), Patientlastname VARCHAR(255), Patientdob Varchar(255), Patientfistname VARCHAR(255), Patientins VARCHAR(255), Patientphone VARCHAR(255), email VARCHAR(255), SSN VARCHAR(255) ";
         
         
         
@@ -93,7 +93,7 @@ public class EventDaoImpl implements EventDao{
     }
 
     @Override
-    public boolean hasEvent(String eventname, String username, String creator, String patientlastname, String patientdob, String patientfirstname, String patientins, String patientphone, String email) {
+    public boolean hasEvent(String eventname, String username, String creator, String patientlastname, String patientdob, String patientfirstname, String patientins, String patientphone, String email, String SSN) {
         try {
             String query = "SELECT EventName FROM Event WHERE EventUser='"+username+"' AND EventName='"+eventname+"' AND EventCreator='"+creator+"'";
             jdbcTemplate = new JdbcTemplate(dataSource);
@@ -134,7 +134,7 @@ public class EventDaoImpl implements EventDao{
         cal.add(Calendar.MONTH,3);
         Date beyond_date = cal.getTime();
 
-        String query = "SELECT ID, EventName, EventDate, EventDesc, EventUser, EventCreator,Patientlastname, Patientdob, Patientfirstname, Patientins, Patientphone, email FROM Event WHERE EventUser='"+username +"' AND EventDate >= " + todays_date + "  ORDER BY EventDate ASC";
+        String query = "SELECT ID, EventName, EventDate, EventDesc, EventUser, EventCreator,Patientlastname, Patientdob, Patientfirstname, Patientins, Patientphone, email, SSN FROM Event WHERE EventUser='"+username +"' AND EventDate >= " + todays_date + "  ORDER BY EventDate ASC";
         Object[] input = new Object[]{username};
         jdbcTemplate = new JdbcTemplate(dataSource);
         List<Event> events = jdbcTemplate.query(query, new EventMapper());
@@ -143,7 +143,7 @@ public class EventDaoImpl implements EventDao{
 
     @Override
     public List<Event> selectAllEvent(String username) {
-        String query = "SELECT  ID, EventName, EventDate, EventDesc, EventUser, EventCreator, Patientlastname, Patientdob, Patientfirstname, Patientins, Patientphone, email FROM Event WHERE EventUser='"+username +"' ORDER BY EventDate ASC";
+        String query = "SELECT  ID, EventName, EventDate, EventDesc, EventUser, EventCreator, Patientlastname, Patientdob, Patientfirstname, Patientins, Patientphone, email, SSN FROM Event WHERE EventUser='"+username +"' ORDER BY EventDate ASC";
         Object[] input = new Object[]{username};
         jdbcTemplate = new JdbcTemplate(dataSource);
         List<Event> events = jdbcTemplate.query(query, new EventMapper());
@@ -152,7 +152,7 @@ public class EventDaoImpl implements EventDao{
 
     @Override
     public List<Event> selectAllEvents() {
-        String query = "SELECT DISTINCT  ID, EventName, EventDate, EventDesc, EventUser, EventCreator, Patientlastname, Patientdob, Patientfirstname, Patientins, Patientphone, email FROM Event WHERE EventUser=EventCreator ORDER BY EventDate ASC";
+        String query = "SELECT DISTINCT  ID, EventName, EventDate, EventDesc, EventUser, EventCreator, Patientlastname, Patientdob, Patientfirstname, Patientins, Patientphone, email, SSN FROM Event WHERE EventUser=EventCreator ORDER BY EventDate ASC";
         jdbcTemplate = new JdbcTemplate(dataSource);
         List<Event> events = jdbcTemplate.query(query, new EventMapper());
         return events;
@@ -160,7 +160,7 @@ public class EventDaoImpl implements EventDao{
 
     @Override
     public Event getEventById(int id) {
-        String query = "select  ID, EventName, EventDate, EventDesc, EventUser, EventCreator, Patientlastname, Patientdob, Patientfirstname, Patientins, Patientphone, email from Event where EventID=" + id + " limit 1";
+        String query = "select  ID, EventName, EventDate, EventDesc, EventUser, EventCreator, Patientlastname, Patientdob, Patientfirstname, Patientins, Patientphone, email, SSN from Event where EventID=" + id + " limit 1";
         jdbcTemplate = new JdbcTemplate(dataSource);
         List<Event> events = jdbcTemplate.query(query, new EventMapper());
         if (events != null && events.size() > 0) {

@@ -71,11 +71,11 @@ public class EventController {
             String author = event.get(id).getEventAuthor();
              */
            
-            Event createdNewEvent = new Event(eventSelected.getId(), eventSelected.getEventName(), eventSelected.getEventDate(), eventSelected.getEventDescription(), username, eventSelected.getEventAuthor(), eventSelected.getPatientlastname(), eventSelected.getpatientfirstname(), eventSelected.getpatientphone(), eventSelected.getemail(),eventSelected.getpatientdob(), eventSelected.getpatientins()); // Create event object
+            Event createdNewEvent = new Event(eventSelected.getId(), eventSelected.getEventName(), eventSelected.getEventDate(), eventSelected.getEventDescription(), username, eventSelected.getEventAuthor(), eventSelected.getpatientlastname(), eventSelected.getpatientfirstname(), eventSelected.getpatientphone(), eventSelected.getemail(),eventSelected.getpatientdob(), eventSelected.getpatientins(), eventSelected.getSSN()); // Create event object
 
 
             // User doesn't have event, proceed with steps
-            if(!eventDao.hasEvent(createdNewEvent.getEventName(), username, createdNewEvent.getEventAuthor(), createdNewEvent.getPatientlastname(), createdNewEvent.getpatientdob(), createdNewEvent.getpatientfirstname(), createdNewEvent.getpatientins(), createdNewEvent.getpatientphone(), createdNewEvent.getemail())) {
+            if(!eventDao.hasEvent(createdNewEvent.getEventName(), username, createdNewEvent.getEventAuthor(), createdNewEvent.getpatientlastname(), createdNewEvent.getpatientdob(), createdNewEvent.getpatientfirstname(), createdNewEvent.getpatientins(), createdNewEvent.getpatientphone(), createdNewEvent.getemail(), createdNewEvent.getSSN())) {
                 eventDao.insertEvent(createdNewEvent);
             }
         } catch (Exception e) {
@@ -109,7 +109,7 @@ public class EventController {
         event.setEventAuthor(username);
         event.setUsername(username);
         // Check for event duplication and event name empty
-        if (eventDao.hasEvent(event.getEventName(),event.getUsername(),event.getEventAuthor(), event.getPatientlastname(), event.getpatientdob(), event.getpatientfirstname(), event.getpatientins(), event.getpatientphone(), event.getemail())) model.put("isDuplicate", "true");
+        if (eventDao.hasEvent(event.getEventName(),event.getUsername(),event.getEventAuthor(), event.getpatientlastname(), event.getpatientdob(), event.getpatientfirstname(), event.getpatientins(), event.getpatientphone(), event.getemail(),event.getSSN())) model.put("isDuplicate", "true");
         //else model.put("isDuplicate", "false");
         if (event.getEventName() == "") model.put("eNameEmpty", "true"); // Check if event name is empty
         //else model.put("eNameEmpty", "false");
@@ -130,7 +130,7 @@ public class EventController {
                     e.printStackTrace();
                 }
 
-                Event e = new Event(id, event.getEventName(), eventDateFormatted, event.getEventDescription(), event.getUsername(), event.getEventAuthor(), event.getPatientlastname(), event.getpatientfirstname(), event.getpatientdob(), event.getpatientfirstname(), event.getpatientins(), event.getemail());
+                Event e = new Event();
                 eventDao.insertEvent(e);
 
             } catch (Exception e) {

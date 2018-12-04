@@ -17,10 +17,11 @@ public class Event{
     private String eventAuthor;
     private String month,day,year;
     private String email;
+    private String SSN;
 
     public  Event(){};
     public Event(int id, String name, Date date, String desc, String uname, String author, 
-    		String ptlastname, String ptfirstname, String phone, String ptdob, String ins, String email) 
+    		String ptlastname, String ptfirstname, String phone, String ptdob, String ins, String email, String SSN) 
     {
         this.patientId = id;
         this.eventName = name;
@@ -34,6 +35,7 @@ public class Event{
         this.patientins = ins;
         this.patientphone = phone;
         this.email = email;
+        this.SSN = SSN;
     }
 
     public int getId() {
@@ -52,7 +54,7 @@ public class Event{
         this.eventName = eventName;
     }
     
-    public String getPatientlastname() {
+    public String getpatientlastname() {
     	return patientlastname;
     }
 
@@ -133,6 +135,12 @@ public void setemail(String email) {
 
     public void setMonth(String month) {
         this.month = month;
+    }
+    public String getSSN() {
+    	return SSN;
+    }
+    public void setSSN(String SSN) {
+    	this.SSN = SSN;
     }
 
     public String getDay() {
